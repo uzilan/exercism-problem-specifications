@@ -1,6 +1,6 @@
 {
     "exercise": "sgf-parsing",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "cases": [
         {
             "description": "empty input",
@@ -39,7 +39,8 @@
                 "encoded": "(;)"
             },
             "expected": {
-                "properties": {}
+                "properties": {},
+                "children": []
             }
         },
         {
@@ -51,6 +52,20 @@
             "expected": {
                 "properties": {
                     "A": ["B"]
+                },
+                "children": []
+            }
+        },
+        {
+            "description": "multiple properties",
+            "property": "parse",
+            "input": {
+                "encoded": "(;A[b]C[d])"
+            },
+            "expected": {
+                "properties": {
+                    "A": ["b"],
+                    "C": ["d"]
                 },
                 "children": []
             }

@@ -10,6 +10,7 @@ generics
 inheritance
 interfaces
 loops
+operator_overloading
 pattern_matching
 polymorphism
 recursion
@@ -49,13 +50,14 @@ algorithms
 bitwise_operations
 concurrency
 cryptography
+data_structures
 domain_specific_languages
 files
 filtering
 games
 globalization
 logic
-mathematics
+math
 memory_management
 networking
 parallelism

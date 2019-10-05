@@ -35,12 +35,12 @@ There are three metadata files:
 ## Test Data Format (canonical-data.json)
 
 This data can be incorporated into test programs manually or extracted by a
-program.  The file format is described in `canonical-schema.json`, but it
+program.  The file format is described in [canonical-schema.json](https://github.com/exercism/problem-specifications/blob/master/canonical-schema.json), but it
 is easier to understand with an example:
 
 ```json
 { "exercise": "foobar"
-, "version" : "1.0.0"
+, "version" : "1.1.0"
 , "comments":
     [ " Comments are always optional and can be used almost anywhere.      "
     , "                                                                    "
@@ -92,6 +92,15 @@ is easier to understand with an example:
               }
             , "expected"   : null
             }
+          , { "description": "Foo'ing a very big number returns nothing"
+            , "optional"   : "big-ints"
+            , "comments"   : [ "Making this test case pass requires using BigInts." ]
+            , "property"   : "foo"
+            , "input"      : {
+                "word"       : "28948022309329048855892746252171976962977213799489202546401021394546514198529"
+              }
+            , "expected"   : null
+            }
           , { "description": "Bar'ing a name with numbers gives an error"
             , "property"   : "bar"
             , "input"      : {
@@ -118,6 +127,15 @@ There are also some conventions that must be followed:
   - If an error is expected (because the input is invalid, or any other reason), the value at `"expected"` should be an object containing exactly one property, `"error"`, whose value is a string.
     - The string should explain why the error would occur.
     - A particular track's implementation of the exercise **need not** necessarily check that the error includes that exact string as the cause, depending on what is idiomatic in the language (it may not be idiomatic to check strings for error messages).
+  - Test cases that only some tracks should implement, for example because it would unnecessarily increase the complexity of the exercise in some but not all languages, mark it with an `optional`-key. Multiple cases related to the same reason for optionality should have the same key. The decision that a test case is optional will often be made in the PR discussion, so don't worry about it too much while creating a PR.
+
+The `canonical.json` file can be validated against its schema prior to commiting using https://www.jsonschemavalidator.net/ with...
+```
+{
+	"$schema": "https://github.com/exercism/problem-specifications/blob/master/canonical-schema.json"
+}
+```
+
 
 ### Test Data Versioning
 
@@ -170,6 +188,23 @@ There are examples of changes requiring a PATCH version change:
 - Changing keys' ordering or formatting (would result in an equivalent JSON file).    
 
 PATCH changes would never break well-designed test generators, because the test data remains exactly the same.
+
+#### Automatic verification of versioning changes
+
+Travis CI will automatically verify that all changed JSON files have their version changed, via [bin/check_versions](https://github.com/exercism/problem-specifications/blob/master/bin/check_versions).
+
+This helps avoid the mistake of forgetting to change the version when a change is made to the tests.
+
+Although this is desired most of the time, there are instances (e.g. formatting change) where no version change is desired.
+In such instances, see [bin/check_versions](https://github.com/exercism/problem-specifications/blob/master/bin/check_versions) for the override string.
+Place the string inside a commit message to skip the version check.
+Note that as the override applies to the entire PR, it's highly advised that changes that do not require a version change should not be in the same PR as changes that do require a version change.
+
+## New Exercises Require a Glyph
+
+When creating a new exercise the design team needs to be informed so that a new glyph can be created.
+- An issue should be opened in [exercism/website-icons](https://github.com/exercism/website-icons/issues) after a PR has been opened in problem-specifications.
+- This issue should reference the PR in problem-specifications.
 
 ## Automated Tests
 
